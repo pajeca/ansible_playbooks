@@ -1,0 +1,12 @@
+---
+- name: get package facts
+  hosts: localhost
+  tasks:
+    - name: get package facts
+      package_facts:
+        manager: auto
+      register: facts
+
+    - name: debug facts
+      debug:
+        var: facts
