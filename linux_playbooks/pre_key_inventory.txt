@@ -1,3 +1,0 @@
-[targets]
-target1 ansible_host=192.168.50.205 ansible_ssh_pass=F@$7f00d
-target2 ansible_host=192.168.50.168 ansible_ssh_pass=F@$7f00d
