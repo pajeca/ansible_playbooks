@@ -1,0 +1,48 @@
+---
+- name: Linux pkg Update and Upgrade
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update Debian Family OS Pkgs
+      block:
+        - name: Update and Upgrade Apt
+          apt:
+            name: "*"
+            state: latest
+            only_upgrade: yes
+            update_cache: yes
+          register: apt_update_status
+
+        - name: Remove un-needed pkgs
+          apt:
+            autoremove: yes
+
+        - name: Reboot if packages were updated
+          reboot:
+          when: apt_update_status.changed
+
+      when:
+        ansible_facts['os_family'] == "Debian"
+      
+    - name: Update RHEL Family OS Pkgs
+      block:
+        - name: Update and Upgrade Yum
+          yum:
+            name: "*"
+            state: latest
+            only_upgrade: yes
+            update_cache: yes
+          register: yum_update_status
+
+        - name: Remove un-needed pkgs
+          yum:
+            autoremove: yes
+
+        - name: Reboot if packages were updated
+          reboot:
+          when: yum_update_status.changed
+      
+      when:
+        ansible_facts['os_family'] == "RedHat"
+
+
